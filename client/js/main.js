@@ -67,15 +67,8 @@ function inicializaMarcadores() {
 	var frase = $(".frase").text();
 	campo.on("input", function() {
 		var digitado = campo.val();
-
-		if (digitado == frase.substr(0, digitado.length)) {
-			console.log("true");
-			campo.addClass("borda-verde");
-			campo.removeClass("borda-vermelha");
-		} else {
-			console.log("false");
-			campo.removeClass("borda-verde");
-			campo.addClass("borda-vermelha");
-		}
+		var ehCorreto = (digitado == frase.substr(0, digitado.length));
+		campo.toggleClass("borda-verde", ehCorreto);
+		campo.toggleClass("borda-vermelha", !ehCorreto);
 	});
 }
