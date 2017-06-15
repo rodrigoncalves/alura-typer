@@ -33,7 +33,6 @@ function inicializaCronometro() {
 	var tempoRestante = $("#tempo-digitacao").text();
 	var botaoReiniciar = $("#botao-reiniciar")
 	botaoReiniciar.attr("disabled", true);
-	campo.removeClass('campo-desativado');
 
 	campo.one("focus", function() {
 		var cronometroID = setInterval(function() {
@@ -41,7 +40,7 @@ function inicializaCronometro() {
 				campo.attr("disabled", true);
 				botaoReiniciar.attr("disabled", false);
 				clearInterval(cronometroID);
-				campo.addClass("campo-desativado");
+				campo.toggleClass("campo-desativado");
 			}
 			$("#tempo-digitacao").text(tempoRestante);
 			tempoRestante--;
@@ -57,4 +56,5 @@ function reiniciarJogo() {
 	$("#contador-palavras").text("0");
 
 	inicializaCronometro();
+	campo.toggleClass("campo-desativado");
 }
