@@ -31,10 +31,14 @@ function inicializaContadores() {
 
 function inicializaCronometro() {
 	var tempoRestante = $("#tempo-digitacao").text();
+	var botaoReiniciar = $("#botao-reiniciar")
+	botaoReiniciar.attr("disabled", true);
+
 	campo.one("focus", function() {
 		var cronometroID = setInterval(function() {
 			if (tempoRestante <= 0) {
 				campo.attr("disabled", true);
+				botaoReiniciar.attr("disabled", false);
 				clearInterval(cronometroID);
 			}
 			$("#tempo-digitacao").text(tempoRestante);
