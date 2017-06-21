@@ -1,4 +1,4 @@
-var tempoInicial = 30;
+var tempoInicial = 5;
 var campo = $(".campo-digitacao");
 
 // $(document).ready(function() {
@@ -18,6 +18,7 @@ function atualizaTamanhoFrase() {
 }
 
 function inicializaContadores() {
+	$("#tempo-digitacao").text(tempoInicial);
 
 	campo.on("input", function() {
 		var conteudo = campo.val();
@@ -32,21 +33,28 @@ function inicializaContadores() {
 
 function inicializaCronometro() {
 	var tempoRestante = $("#tempo-digitacao").text();
-	var botaoReiniciar = $("#botao-reiniciar")
+	var botaoReiniciar = $("#botao-reiniciar");
 	botaoReiniciar.attr("disabled", true);
 
 	campo.one("focus", function() {
 		var cronometroID = setInterval(function() {
 			if (tempoRestante <= 0) {
-				campo.attr("disabled", true);
-				botaoReiniciar.attr("disabled", false);
 				clearInterval(cronometroID);
-				campo.toggleClass("campo-desativado");
+				finalizaJogo();
 			}
 			$("#tempo-digitacao").text(tempoRestante);
 			tempoRestante--;
 		}, 1000);
 	});
+}
+
+function finalizaJogo() {
+	var botaoReiniciar = $("#botao-reiniciar");
+	botaoReiniciar.attr("disabled", false);
+	campo.attr("disabled", true);
+	campo.toggleClass("campo-desativado");
+
+	inserePlacar();
 }
 
 function reiniciarJogo() {
@@ -67,8 +75,22 @@ function inicializaMarcadores() {
 	var frase = $(".frase").text();
 	campo.on("input", function() {
 		var digitado = campo.val();
-		var ehCorreto = (digitado == frase.substr(0, digitado.length));
+		var ehCorreto = frase.startsWith(digitado);
 		campo.toggleClass("borda-verde", ehCorreto);
 		campo.toggleClass("borda-vermelha", !ehCorreto);
 	});
+}
+
+
+function inserePlacar() {
+	var usuario = "Rodrigo";
+	var numPalavras = $("#contador-palavras").text();
+
+	var tbody = $(".placar").find("tbody");
+	var htmlData =
+		"<tr>"+
+			"<td>"+usuario+"</td>"+
+			"<td>"+numPalavras+"</td>"+
+		"</tr>";
+	tbody.prepend(htmlData);
 }
